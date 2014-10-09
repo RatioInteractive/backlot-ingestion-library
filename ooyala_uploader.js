@@ -174,6 +174,7 @@
 
   MovieUploader = (function() {
     function MovieUploader(options) {
+      this.parseJsonConditional = __bind(this.parseJsonConditional, this);
       this.onError = __bind(this.onError, this);
       this.onAssetUploadComplete = __bind(this.onAssetUploadComplete, this);
       this.onChunkComplete = __bind(this.onChunkComplete, this);
@@ -202,17 +203,6 @@
       this.completedChunkIndexes = [];
       this.completedChunks = 0;
       this.totalChunks;
-      ({
-        parseJsonConditional: (function(_this) {
-          return function(json) {
-            if (typeof json === 'object') {
-              return json;
-            } else {
-              return JSON.parse(json);
-            }
-          };
-        })(this)
-      });
     }
 
 
@@ -528,6 +518,14 @@
         statusCode: response.status,
         message: "" + clientMessage + ", " + errorMessage
       });
+    };
+
+    MovieUploader.prototype.parseJsonConditional = function(json) {
+      if (typeof json === 'object') {
+        return json;
+      } else {
+        return JSON.parse(json);
+      }
     };
 
     return MovieUploader;

@@ -92,12 +92,6 @@ class MovieUploader
     @completedChunks = 0
     @totalChunks
 
-    parseJsonConditional : (json) =>
-        if typeof json is 'object'
-          json
-        else
-          JSON.parse(json)
-
   ###
   Placeholders in the urls are replaced dynamically when the http request is built
   assetID   -   is replaced with the actual id of the asset (embed code)
@@ -293,6 +287,12 @@ class MovieUploader
       fileName:     @assetMetadata.assetName
       statusCode:   response.status
       message:      "#{clientMessage}, #{errorMessage}"
+
+  parseJsonConditional : (json) =>
+    if typeof json is 'object'
+      json
+    else
+      JSON.parse(json)
 
 class ChunkUploader
   constructor: (options) ->
