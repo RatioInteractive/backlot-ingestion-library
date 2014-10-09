@@ -293,7 +293,7 @@
 
     MovieUploader.prototype.onAssetCreated = function(assetCreationResponse) {
       var parsedResponse;
-      parsedResponse = parseJsonConditional(assetCreationResponse);
+      parsedResponse = this.parseJsonConditional(assetCreationResponse);
       this.assetMetadata.assetID = parsedResponse.embed_code;
 
       /*
@@ -332,7 +332,7 @@
 
     MovieUploader.prototype.assignLabels = function(responseCreationLabels) {
       var label, labelIds, parsedLabelsResponse;
-      parsedLabelsResponse = parseJsonConditional(responseCreationLabels);
+      parsedLabelsResponse = this.parseJsonConditional(responseCreationLabels);
       labelIds = (function() {
         var _i, _len, _results;
         _results = [];
@@ -389,7 +389,7 @@
 
     MovieUploader.prototype.onUploadUrlsReceived = function(uploadingUrlsResponse) {
       var parsedUploadingUrl;
-      parsedUploadingUrl = parseJsonConditional(uploadingUrlsResponse);
+      parsedUploadingUrl = this.parseJsonConditional(uploadingUrlsResponse);
       this.totalChunks = parsedUploadingUrl.length;
       if (this.uploaderType === "HTML5") {
         return this.startHTML5Upload(parsedUploadingUrl);
@@ -504,7 +504,7 @@
     MovieUploader.prototype.onError = function(response, clientMessage) {
       var errorMessage, parsedResponse, _;
       try {
-        parsedResponse = parseJsonConditional(response.responseText);
+        parsedResponse = this.parseJsonConditional(response.responseText);
         errorMessage = parsedResponse["message"];
       } catch (_error) {
         _ = _error;
@@ -664,5 +664,3 @@
   });
 
 }).call(this);
-
-//# sourceMappingURL=ooyala_uploader.js.map

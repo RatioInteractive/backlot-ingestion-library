@@ -150,7 +150,7 @@ class MovieUploader
       error: (response) => @onError(response, "Asset creation error")
 
   onAssetCreated: (assetCreationResponse) =>
-    parsedResponse = parseJsonConditional(assetCreationResponse)
+    parsedResponse = @parseJsonConditional(assetCreationResponse)
     @assetMetadata.assetID = parsedResponse.embed_code
     ###
     Note: It could take some time for the asset to be copied. Send the upload ready callback
@@ -171,7 +171,7 @@ class MovieUploader
       error: (response) => @onError(response, "Label creation error")
 
   assignLabels: (responseCreationLabels) ->
-    parsedLabelsResponse = parseJsonConditional(responseCreationLabels)
+    parsedLabelsResponse = @parseJsonConditional(responseCreationLabels)
     labelIds = (label["id"] for label in parsedLabelsResponse)
     jQuery.ajax
       url: @assetMetadata.labelAssignmentUrl.replace("assetID", @assetMetadata.assetID)
@@ -197,7 +197,7 @@ class MovieUploader
   Uploading all chunks
   ###
   onUploadUrlsReceived: (uploadingUrlsResponse) =>
-    parsedUploadingUrl = parseJsonConditional(uploadingUrlsResponse)
+    parsedUploadingUrl = @parseJsonConditional(uploadingUrlsResponse)
     @totalChunks = parsedUploadingUrl.length
     if @uploaderType is "HTML5"
       @startHTML5Upload(parsedUploadingUrl)
@@ -275,7 +275,7 @@ class MovieUploader
 
   onError: (response, clientMessage) =>
     try
-      parsedResponse = parseJsonConditional(response.responseText)
+      parsedResponse = @parseJsonConditional(response.responseText)
       errorMessage = parsedResponse["message"]
     catch _
       errorMessage = response.statusText
