@@ -92,6 +92,12 @@ class MovieUploader
     @completedChunks = 0
     @totalChunks
 
+    parseJsonConditional : (json) =>
+        if typeof json is 'object'
+          json
+        else
+          JSON.parse(json)
+
   ###
   Placeholders in the urls are replaced dynamically when the http request is built
   assetID   -   is replaced with the actual id of the asset (embed code)
@@ -150,7 +156,7 @@ class MovieUploader
       error: (response) => @onError(response, "Asset creation error")
 
   onAssetCreated: (assetCreationResponse) =>
-    parsedResponse = JSON.parse(assetCreationResponse)
+    parsedResponse = parseJsonConditional(assetCreationResponse)
     @assetMetadata.assetID = parsedResponse.embed_code
     ###
     Note: It could take some time for the asset to be copied. Send the upload ready callback
@@ -165,12 +171,13 @@ class MovieUploader
     listOfLabels = @assetMetadata.assetLabels.join(",")
     jQuery.ajax
       url: @assetMetadata.labelCreationUrl.replace("paths", listOfLabels)
-      type: "POST"
+      type: "POST",
+      dataType: ''
       success: (response) => @assignLabels(response)
       error: (response) => @onError(response, "Label creation error")
 
   assignLabels: (responseCreationLabels) ->
-    parsedLabelsResponse = JSON.parse(responseCreationLabels)
+    parsedLabelsResponse = parseJsonConditional(responseCreationLabels)
     labelIds = (label["id"] for label in parsedLabelsResponse)
     jQuery.ajax
       url: @assetMetadata.labelAssignmentUrl.replace("assetID", @assetMetadata.assetID)
@@ -196,7 +203,7 @@ class MovieUploader
   Uploading all chunks
   ###
   onUploadUrlsReceived: (uploadingUrlsResponse) =>
-    parsedUploadingUrl = JSON.parse(uploadingUrlsResponse)
+    parsedUploadingUrl = parseJsonConditional(uploadingUrlsResponse)
     @totalChunks = parsedUploadingUrl.length
     if @uploaderType is "HTML5"
       @startHTML5Upload(parsedUploadingUrl)
@@ -274,7 +281,7 @@ class MovieUploader
 
   onError: (response, clientMessage) =>
     try
-      parsedResponse = JSON.parse(response.responseText)
+      parsedResponse = parseJsonConditional(response.responseText)
       errorMessage = parsedResponse["message"]
     catch _
       errorMessage = response.statusText
