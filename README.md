@@ -1,5 +1,7 @@
 # Ooyala Backlot Uploader JavaScript Library v2
 
+[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/RatioInteractive/backlot-ingestion-library?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 ## Overview
 
 The Ooyala Backlot Uploader JavaScript library is an easy way to integrate with Ooyala's ingestion application
